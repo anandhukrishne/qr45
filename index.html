@@ -14,16 +14,13 @@
 
     <div class="w-full max-w-xl mx-auto flex flex-col gap-5">
 
-        <!-- ── Top Header / Brand ── -->
         <header class="flex items-center justify-between border-b border-[#262B36] pb-4 pt-1">
             <div class="flex items-center gap-3">
                 <img src="favicon.png" alt="45 Studios" class="w-9 h-9 rounded-lg object-contain bg-[#161922] border border-[#262B36] p-0.5">
                 <div>
                     <div class="flex items-center gap-2">
                         <span class="text-xl font-bold tracking-tight text-white">qr45</span>
-                        <span class="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-[#262B36] text-[#FF7629]">Studio</span>
                     </div>
-                    <p class="text-[11px] text-[#8E97A8]">Precision QR Architect &bull; 45 Studios</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
@@ -32,20 +29,19 @@
             </div>
         </header>
 
-        <!-- ── Main Configuration Card ── -->
         <main class="bg-[#161922] rounded-2xl border border-[#262B36] p-4 sm:p-6 flex flex-col gap-5">
 
-            <!-- 1. Content / Payload -->
             <div class="flex flex-col gap-1.5">
-                <label class="field-label" for="qr-data">Content Payload / URL</label>
-                <input id="qr-data" type="text" placeholder="https://yourdomain.com or text payload"
+                <label class="field-label" for="qr-data">Enter a message / URL</label>
+                <input id="qr-data" type="text" placeholder="https://yourlink.com or message"
                        autocomplete="off" spellcheck="false" value="https://example.com"
                        style="display:block;width:100%;background-color:#1E232F;color:#FFFFFF;caret-color:#FB542B;border:1px solid #262B36;border-radius:0.65rem;padding:0.7rem 1rem;font-size:0.92rem;outline:none;box-sizing:border-box;"
                        onfocus="this.style.borderColor='#FB542B'"
                        onblur="this.style.borderColor='#262B36'">
             </div>
 
-            <!-- 2. Color Palette Controls -->
+            <hr class="border-[#262B36]">
+
             <div class="grid grid-cols-2 gap-3">
                 <div class="flex flex-col gap-1.5">
                     <label class="field-label" for="qr-fill">QR Color</label>
@@ -63,9 +59,10 @@
                 </div>
             </div>
 
-            <!-- 3. Shape & Dot Style Geometry -->
+            <hr class="border-[#262B36]">
+
             <div class="flex flex-col gap-2">
-                <label class="field-label">Module Geometry</label>
+                <label class="field-label">Shape of QR design</label>
                 <div class="grid grid-cols-4 gap-2">
                     <button type="button" class="shape-chip active" data-shape="square" onclick="selectShape('square')">
                         <i class="fa-solid fa-square text-xs block mb-1"></i> Square
@@ -82,7 +79,8 @@
                 </div>
             </div>
 
-            <!-- 4. Module Size & Border (Quiet Zone) Sliders -->
+            <hr class="border-[#262B36]">
+
             <div class="grid grid-cols-2 gap-4">
                 <div class="flex flex-col gap-2">
                     <label class="field-label">
@@ -100,11 +98,11 @@
                 </div>
             </div>
 
-            <!-- 5. Optional Media Layer (Logo / Animated GIF) -->
+            <hr class="border-[#262B36]">
+
             <div class="border border-[#262B36] rounded-xl p-3.5 bg-[#12151D] flex flex-col gap-3">
                 <div class="flex items-center justify-between">
-                    <span class="field-label text-[#CBD5E1]">Media Overlay (Optional)</span>
-                    <span class="text-[11px] text-[#8E97A8]">Renders cleanly with or without</span>
+                    <span class="field-label text-[#CBD5E1]">Integrate your media(Optional)</span>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2">
@@ -112,14 +110,13 @@
                         None
                     </button>
                     <button type="button" class="shape-chip text-xs py-1.5" data-media="logo" onclick="selectMediaMode('logo')">
-                        Center Logo
+                        Center logo/image
                     </button>
                     <button type="button" class="shape-chip text-xs py-1.5" data-media="gif" onclick="selectMediaMode('gif')">
                         Animated GIF
                     </button>
                 </div>
 
-                <!-- Logo controls (hidden by default) -->
                 <div id="media-controls-logo" class="hidden flex-col gap-2 pt-1">
                     <div class="flex gap-2">
                         <input id="logo-url" type="url" placeholder="https://example.com/logo.png"
@@ -132,10 +129,9 @@
                     </div>
                 </div>
 
-                <!-- GIF controls (hidden by default) -->
                 <div id="media-controls-gif" class="hidden flex-col gap-2 pt-1">
                     <div class="flex gap-2">
-                        <input id="gif-url" type="url" placeholder="https://example.com/background.gif"
+                        <input id="gif-url" type="url" placeholder="https://media3.giphy.com/media/yourgif"
                                style="flex:1;background-color:#1E232F;color:#FFFFFF;border:1px solid #262B36;border-radius:0.5rem;padding:0.45rem 0.75rem;font-size:0.8rem;outline:none;"
                                onfocus="this.style.borderColor='#FB542B'" onblur="this.style.borderColor='#262B36'">
                         <label for="gif-file" class="px-3 py-1.5 bg-[#1E232F] hover:bg-[#262B36] border border-[#262B36] rounded-lg text-xs font-semibold cursor-pointer flex items-center gap-1.5 text-[#CBD5E1]">
@@ -146,21 +142,23 @@
                 </div>
             </div>
 
-            <!-- Action Button -->
+            <hr class="border-[#262B36]">
+
             <button onclick="renderQR()" class="generate-btn w-full py-3.5 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-qrcode"></i> Generate with qr45
             </button>
 
-            <!-- ── Preview Stage ── -->
-            <div class="border-t border-[#262B36] pt-5 flex flex-col items-center gap-4">
+            <hr class="border-[#262B36]">
+
+            <div class="flex flex-col items-center gap-4">
                 <div id="preview-placeholder" class="py-8 text-center text-[#8E97A8] text-xs flex flex-col items-center gap-2">
                     <i class="fa-solid fa-qrcode text-4xl opacity-20"></i>
-                    <span>Configure properties and click generate</span>
+                    <span>Please select properties and click generate</span>
                 </div>
 
                 <div id="preview-spinner" class="hidden py-8 flex-col items-center gap-3">
                     <div class="spinner"></div>
-                    <span class="text-xs text-[#8E97A8]">Architecting QR...</span>
+                    <span class="text-xs text-[#8E97A8]">Generating your QR code...</span>
                 </div>
 
                 <div id="preview-frame" class="hidden qr-preview-frame">
@@ -171,24 +169,21 @@
                     <i class="fa-solid fa-triangle-exclamation mr-1.5"></i> <span id="error-msg"></span>
                 </div>
 
-                <!-- Download Options -->
                 <div id="download-actions" class="hidden items-center gap-2.5 w-full justify-center">
                     <button onclick="downloadOutput('png')" class="flex-1 py-2 px-3 bg-[#1E232F] hover:bg-[#262B36] border border-[#262B36] rounded-lg text-xs font-bold text-white flex items-center justify-center gap-1.5 transition-colors">
-                        <i class="fa-solid fa-file-image text-[#FB542B]"></i> Download PNG
+                        <i class="fa-solid fa-file-image text-[#FB542B]"></i> Download PNG(recommended)
                     </button>
                     <button id="svg-dl-btn" onclick="downloadOutput('svg')" class="flex-1 py-2 px-3 bg-[#1E232F] hover:bg-[#262B36] border border-[#262B36] rounded-lg text-xs font-bold text-white flex items-center justify-center gap-1.5 transition-colors">
-                        <i class="fa-solid fa-vector-square text-[#FF7629]"></i> Download SVG
+                        <i class="fa-solid fa-vector-square text-[#FF7629]"></i> Download SVG(best for web images)
                     </button>
                 </div>
             </div>
 
         </main>
 
-        <!-- ── Legal Disclaimer & Copyright Footer ── -->
         <footer class="border-t border-[#262B36] pt-5 pb-3 text-center text-[11px] text-[#8E97A8] flex flex-col items-center gap-3">
-            <!-- 45 Studios Official Emblem / Brandmark -->
             <div class="flex items-center justify-center gap-2">
-                <img src="blk_blk_vert_bg45_logo.svg" alt="45 Studios Logo" class="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity rounded">
+                <img src="wht_wht_bgvert45_logo.svg" alt="45 Studios Logo" class="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity rounded">
             </div>
 
             <p class="leading-relaxed max-w-md">
@@ -201,7 +196,6 @@
 
     </div>
 
-    <!-- ── Privacy & Terms Modals ── -->
     <div id="legal-modal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
         <div class="bg-[#161922] border border-[#262B36] rounded-2xl max-w-lg w-full p-6 flex flex-col gap-4 text-[#CBD5E1]">
             <div class="flex items-center justify-between border-b border-[#262B36] pb-3">
@@ -214,34 +208,25 @@
     </div>
 
     <script>
-        /* ── Dynamic API Configuration ── */
-        // When served by the backend directly or via proxy, relative path works automatically.
-        // If hosted on a static domain (e.g. GitHub Pages or https://qr45.anandhukrishne.tech)
-        // while the backend is deployed elsewhere (e.g. on Render), allow configuring via window.API_BASE_URL or fallback to relative/current origin.
         const API_BASE_URL = (function() {
             if (window.QR45_API_URL) return window.QR45_API_URL.replace(/\/+$/, '');
-            // If running on local dev server or served directly from FastAPI:
             if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                 return window.location.origin;
             }
-            // If the frontend is served from the backend (same origin):
             return '';
         })();
 
-        /* ── State variables ── */
         let activeShape = 'square';
         let activeMedia = 'none';
         let latestBlob = null;
         let latestSvgText = null;
         let isAnimated = false;
 
-        /* ── Color Pickers ── */
         document.querySelectorAll('input[type="color"]').forEach(el => {
             const lbl = document.getElementById(el.id + '-label');
             if (lbl) el.addEventListener('input', () => { lbl.textContent = el.value.toUpperCase(); });
         });
 
-        /* ── Shape Selection ── */
         function selectShape(shape) {
             activeShape = shape;
             document.querySelectorAll('[data-shape]').forEach(btn => {
@@ -249,7 +234,6 @@
             });
         }
 
-        /* ── Media Mode Selection ── */
         function selectMediaMode(mode) {
             activeMedia = mode;
             document.querySelectorAll('[data-media]').forEach(btn => {
@@ -267,7 +251,6 @@
             }
         }
 
-        /* ── Core QR Generator Call ── */
         async function renderQR() {
             const data = document.getElementById('qr-data').value.trim();
             if (!data) {
@@ -307,7 +290,6 @@
             }
 
             try {
-                // Request PNG / Animated version
                 fd.append('format', isAnimated ? 'animated' : 'png');
                 const targetUrl = `${API_BASE_URL}/api/qr/generate`;
                 const resp = await fetch(targetUrl, { method: 'POST', body: fd });
@@ -320,7 +302,6 @@
                 const url = URL.createObjectURL(latestBlob);
                 document.getElementById('qr-output').src = url;
 
-                // Also fetch vector SVG if not in animated mode
                 if (!isAnimated) {
                     const svgFd = new FormData();
                     svgFd.append('data', data);
@@ -361,7 +342,6 @@
             }
         }
 
-        /* ── Download Handler ── */
         function downloadOutput(fmt) {
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
             const a = document.createElement('a');
@@ -386,7 +366,6 @@
             document.getElementById('preview-error').classList.add('hidden');
         }
 
-        /* ── Legal Modals Content ── */
         const legalTexts = {
             privacy: `
                 <h4 class="font-bold text-white mb-1.5">qr45 Privacy Policy</h4>
