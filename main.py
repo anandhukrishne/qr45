@@ -31,31 +31,13 @@ app = FastAPI(
 )
 
 # ── CORS Configuration ────────────────────────────────────────────────────────
-# Allow production frontend domain, localhost development, and optional env override
-ALLOWED_ORIGINS = [
-    "https://qr45.anandhukrishne.tech",
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "http://localhost:8000",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:8000",
-]
-
-# Allow additional origins via environment variable if provided
-extra_origins = os.getenv("ALLOWED_ORIGINS", "")
-if extra_origins:
-    ALLOWED_ORIGINS.extend([origin.strip() for origin in extra_origins.split(",") if origin.strip()])
-
-# If CORS_ALLOW_ALL is set to "true", allow all origins (useful for testing/staging)
-if os.getenv("CORS_ALLOW_ALL", "false").lower() == "true":
-    ALLOWED_ORIGINS = ["*"]
-
+# Using allow_origin_regex to support any localhost port, Render backend URLs,
+# custom domains (e.g. https://qr45.anandhukrishne.tech), and staging environments
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
+    allow_origin_regex=r"https?://.*",
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
+    allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["Content-Disposition", "Content-Type"],
 )

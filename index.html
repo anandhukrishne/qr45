@@ -214,6 +214,20 @@
     </div>
 
     <script>
+        /* ── Dynamic API Configuration ── */
+        // When served by the backend directly or via proxy, relative path works automatically.
+        // If hosted on a static domain (e.g. GitHub Pages or https://qr45.anandhukrishne.tech)
+        // while the backend is deployed elsewhere (e.g. on Render), allow configuring via window.API_BASE_URL or fallback to relative/current origin.
+        const API_BASE_URL = (function() {
+            if (window.QR45_API_URL) return window.QR45_API_URL.replace(/\/+$/, '');
+            // If running on local dev server or served directly from FastAPI:
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return window.location.origin;
+            }
+            // If the frontend is served from the backend (same origin):
+            return '';
+        })();
+
         /* ── State variables ── */
         let activeShape = 'square';
         let activeMedia = 'none';
@@ -295,10 +309,11 @@
             try {
                 // Request PNG / Animated version
                 fd.append('format', isAnimated ? 'animated' : 'png');
-                const resp = await fetch('http://127.0.0.1:8000/api/qr/generate', { method: 'POST', body: fd });
+                const targetUrl = `${API_BASE_URL}/api/qr/generate`;
+                const resp = await fetch(targetUrl, { method: 'POST', body: fd });
                 if (!resp.ok) {
                     const err = await resp.text();
-                    throw new Error(err);
+                    throw new Error(err || `Server returned status ${resp.status}`);
                 }
 
                 latestBlob = await resp.blob();
@@ -316,7 +331,7 @@
                     svgFd.append('format', 'svg');
                     svgFd.append('media_mode', 'none');
 
-                    const svgResp = await fetch('http://127.0.0.1:8000/api/qr/generate', { method: 'POST', body: svgFd });
+                    const svgResp = await fetch(targetUrl, { method: 'POST', body: svgFd });
                     if (svgResp.ok) {
                         latestSvgText = await svgResp.text();
                         document.getElementById('svg-dl-btn').classList.remove('hidden');
@@ -337,7 +352,12 @@
                 document.getElementById('preview-spinner').classList.add('hidden');
                 document.getElementById('preview-spinner').classList.remove('flex');
                 document.getElementById('preview-placeholder').classList.remove('hidden');
-                showError(ex.message || "Failed to generate QR code.");
+                
+                let friendlyMsg = ex.message || "Failed to generate QR code.";
+                if (friendlyMsg.includes("Failed to fetch")) {
+                    friendlyMsg = "Failed to fetch: Unable to reach the backend service. Check if the server is running or if network/CORS restrictions are blocking the request.";
+                }
+                showError(friendlyMsg);
             }
         }
 
