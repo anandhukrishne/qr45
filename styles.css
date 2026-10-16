@@ -1,0 +1,169 @@
+/* ── qr45 - 45 Studios Custom Stylesheet ── */
+/* Brave Browser Theme: Clean Matte Charcoal, Crisp Borders, Brave Flame Orange (#FB542B), Zero Glow */
+
+:root {
+    --brave-orange: #FB542B;
+    --brave-orange-hover: #E0431B;
+    --brave-amber: #FF7629;
+    --bg-page: #0E1117;
+    --bg-card: #161922;
+    --bg-input: #1E232F;
+    --border-color: #262B36;
+    --border-focus: #FB542B;
+    --text-primary: #FFFFFF;
+    --text-muted: #8E97A8;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+}
+
+/* ── Typography & Labels ── */
+.field-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* ── Color Picker Control Row ── */
+.color-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 0.65rem;
+    padding: 0.45rem 0.75rem;
+}
+
+.color-hex {
+    font-size: 0.8rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    color: #CBD5E1;
+}
+
+.color-picker {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 0;
+    background: transparent;
+    flex-shrink: 0;
+}
+.color-picker::-webkit-color-swatch-wrapper { padding: 0; }
+.color-picker::-webkit-color-swatch { border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); }
+
+/* ── Slider Controls: Brave Orange without glow ── */
+.qr-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 5px;
+    background: #272C39;
+    border-radius: 9999px;
+    outline: none;
+    cursor: pointer;
+}
+
+.qr-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--brave-orange);
+    border: 2px solid #FFFFFF;
+    cursor: pointer;
+    box-shadow: none !important; /* NO NEON GLOW */
+    transition: transform 0.1s ease;
+}
+.qr-range::-webkit-slider-thumb:hover { transform: scale(1.15); }
+
+.qr-range::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--brave-orange);
+    border: 2px solid #FFFFFF;
+    cursor: pointer;
+    box-shadow: none !important;
+}
+
+/* ── Option Chips / Pills ── */
+.shape-chip {
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+}
+.shape-chip:hover {
+    color: #FFFFFF;
+    border-color: #3C4454;
+}
+.shape-chip.active {
+    background: var(--brave-orange);
+    border-color: var(--brave-orange);
+    color: #FFFFFF;
+}
+
+/* ── Primary Action Button ── */
+.generate-btn {
+    background-color: var(--brave-orange);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 0.75rem;
+    font-weight: 700;
+    font-size: 0.92rem;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.08s ease;
+    box-shadow: none !important; /* NO NEON GLOW */
+}
+.generate-btn:hover {
+    background-color: var(--brave-orange-hover);
+}
+.generate-btn:active {
+    transform: scale(0.985);
+}
+
+/* ── Preview Frame (Crisp White Backplate) ── */
+.qr-preview-frame {
+    background: #FFFFFF;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    max-width: 290px;
+    width: 100%;
+}
+
+/* ── Spinner (Brave Theme, No Glow) ── */
+.spinner {
+    width: 38px;
+    height: 38px;
+    border: 3px solid #272C39;
+    border-top-color: var(--brave-orange);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Modal & Overlays ── */
+.modal-overlay {
+    background-color: rgba(6, 8, 12, 0.8);
+    backdrop-filter: blur(2px);
+}

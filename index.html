@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>qr45 | Professional QR Engine by 45 Studios</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="min-h-screen flex flex-col justify-between font-sans p-3 sm:p-6">
+
+    <div class="w-full max-w-xl mx-auto flex flex-col gap-5">
+
+        <!-- ── Top Header / Brand ── -->
+        <header class="flex items-center justify-between border-b border-[#262B36] pb-4 pt-1">
+            <div class="flex items-center gap-3">
+                <img src="favicon.png" alt="45 Studios" class="w-9 h-9 rounded-lg object-contain bg-[#161922] border border-[#262B36] p-0.5">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl font-bold tracking-tight text-white">qr45</span>
+                        <span class="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-[#262B36] text-[#FF7629]">Studio</span>
+                    </div>
+                    <p class="text-[11px] text-[#8E97A8]">Precision QR Architect &bull; 45 Studios</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="openModal('privacy')" class="text-xs text-[#8E97A8] hover:text-white px-2 py-1 rounded hover:bg-[#1E232F] transition-colors">Privacy</button>
+                <button onclick="openModal('toc')" class="text-xs text-[#8E97A8] hover:text-white px-2 py-1 rounded hover:bg-[#1E232F] transition-colors">Terms</button>
+            </div>
+        </header>
+
+        <!-- ── Main Configuration Card ── -->
+        <main class="bg-[#161922] rounded-2xl border border-[#262B36] p-4 sm:p-6 flex flex-col gap-5">
+
+            <!-- 1. Content / Payload -->
+            <div class="flex flex-col gap-1.5">
+                <label class="field-label" for="qr-data">Content Payload / URL</label>
+                <input id="qr-data" type="text" placeholder="https://yourdomain.com or text payload"
+                       autocomplete="off" spellcheck="false" value="https://example.com"
+                       style="display:block;width:100%;background-color:#1E232F;color:#FFFFFF;caret-color:#FB542B;border:1px solid #262B36;border-radius:0.65rem;padding:0.7rem 1rem;font-size:0.92rem;outline:none;box-sizing:border-box;"
+                       onfocus="this.style.borderColor='#FB542B'"
+                       onblur="this.style.borderColor='#262B36'">
+            </div>
+
+            <!-- 2. Color Palette Controls -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="flex flex-col gap-1.5">
+                    <label class="field-label" for="qr-fill">QR Color</label>
+                    <div class="color-row">
+                        <input id="qr-fill" type="color" value="#0E1117" class="color-picker" aria-label="Foreground color">
+                        <span id="qr-fill-label" class="color-hex">#0E1117</span>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                    <label class="field-label" for="qr-back">Background</label>
+                    <div class="color-row">
+                        <input id="qr-back" type="color" value="#FFFFFF" class="color-picker" aria-label="Background color">
+                        <span id="qr-back-label" class="color-hex">#FFFFFF</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Shape & Dot Style Geometry -->
+            <div class="flex flex-col gap-2">
+                <label class="field-label">Module Geometry</label>
+                <div class="grid grid-cols-4 gap-2">
+                    <button type="button" class="shape-chip active" data-shape="square" onclick="selectShape('square')">
+                        <i class="fa-solid fa-square text-xs block mb-1"></i> Square
+                    </button>
+                    <button type="button" class="shape-chip" data-shape="rounded" onclick="selectShape('rounded')">
+                        <i class="fa-solid fa-square-full text-xs rounded-sm block mb-1"></i> Rounded
+                    </button>
+                    <button type="button" class="shape-chip" data-shape="circle" onclick="selectShape('circle')">
+                        <i class="fa-solid fa-circle text-xs block mb-1"></i> Dots
+                    </button>
+                    <button type="button" class="shape-chip" data-shape="gapped" onclick="selectShape('gapped')">
+                        <i class="fa-solid fa-table-cells text-xs block mb-1"></i> Gapped
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. Module Size & Border (Quiet Zone) Sliders -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col gap-2">
+                    <label class="field-label">
+                        Scale / Size &bull; <span id="size-val" class="text-[#FB542B]">10px</span>
+                    </label>
+                    <input id="qr-size" type="range" min="4" max="24" value="10" class="qr-range"
+                           oninput="document.getElementById('size-val').textContent = this.value + 'px'">
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="field-label">
+                        Quiet Zone &bull; <span id="border-val" class="text-[#FB542B]">2</span>
+                    </label>
+                    <input id="qr-border" type="range" min="0" max="8" value="2" class="qr-range"
+                           oninput="document.getElementById('border-val').textContent = this.value">
+                </div>
+            </div>
+
+            <!-- 5. Optional Media Layer (Logo / Animated GIF) -->
+            <div class="border border-[#262B36] rounded-xl p-3.5 bg-[#12151D] flex flex-col gap-3">
+                <div class="flex items-center justify-between">
+                    <span class="field-label text-[#CBD5E1]">Media Overlay (Optional)</span>
+                    <span class="text-[11px] text-[#8E97A8]">Renders cleanly with or without</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" class="shape-chip active text-xs py-1.5" data-media="none" onclick="selectMediaMode('none')">
+                        None
+                    </button>
+                    <button type="button" class="shape-chip text-xs py-1.5" data-media="logo" onclick="selectMediaMode('logo')">
+                        Center Logo
+                    </button>
+                    <button type="button" class="shape-chip text-xs py-1.5" data-media="gif" onclick="selectMediaMode('gif')">
+                        Animated GIF
+                    </button>
+                </div>
+
+                <!-- Logo controls (hidden by default) -->
+                <div id="media-controls-logo" class="hidden flex-col gap-2 pt-1">
+                    <div class="flex gap-2">
+                        <input id="logo-url" type="url" placeholder="https://example.com/logo.png"
+                               style="flex:1;background-color:#1E232F;color:#FFFFFF;border:1px solid #262B36;border-radius:0.5rem;padding:0.45rem 0.75rem;font-size:0.8rem;outline:none;"
+                               onfocus="this.style.borderColor='#FB542B'" onblur="this.style.borderColor='#262B36'">
+                        <label for="logo-file" class="px-3 py-1.5 bg-[#1E232F] hover:bg-[#262B36] border border-[#262B36] rounded-lg text-xs font-semibold cursor-pointer flex items-center gap-1.5 text-[#CBD5E1]">
+                            <i class="fa-solid fa-upload"></i> <span id="logo-file-name">Upload</span>
+                        </label>
+                        <input id="logo-file" type="file" accept="image/*" class="hidden" onchange="onFilePicked(this, 'logo-file-name')">
+                    </div>
+                </div>
+
+                <!-- GIF controls (hidden by default) -->
+                <div id="media-controls-gif" class="hidden flex-col gap-2 pt-1">
+                    <div class="flex gap-2">
+                        <input id="gif-url" type="url" placeholder="https://example.com/background.gif"
+                               style="flex:1;background-color:#1E232F;color:#FFFFFF;border:1px solid #262B36;border-radius:0.5rem;padding:0.45rem 0.75rem;font-size:0.8rem;outline:none;"
+                               onfocus="this.style.borderColor='#FB542B'" onblur="this.style.borderColor='#262B36'">
+                        <label for="gif-file" class="px-3 py-1.5 bg-[#1E232F] hover:bg-[#262B36] border border-[#262B36] rounded-lg text-xs font-semibold cursor-pointer flex items-center gap-1.5 text-[#CBD5E1]">
+                            <i class="fa-solid fa-film"></i> <span id="gif-file-name">Upload GIF</span>
+                        </label>
+                        <input id="gif-file" type="file" accept="image/gif" class="hidden" onchange="onFilePicked(this, 'gif-file-name')">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button onclick="renderQR()" class="generate-btn w-full py-3.5 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-qrcode"></i> Generate with qr45
+            </button>
+
+            <!-- ── Preview Stage ── -->
+            <div class="border-t border-[#262B36] pt-5 flex flex-col items-center gap-4">
+                <div id="preview-placeholder" class="py-8 text-center text-[#8E97A8] text-xs flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-qrcode text-4xl opacity-20"></i>
+                    <span>Configure properties and click generate</span>
+                </div>
+
+                <div id="preview-spinner" class="hidden py-8 flex-col items-center gap-3">
+                    <div class="spinner"></div>
+                    <span class="text-xs text-[#8E97A8]">Architecting QR...</span>
+                </div>
+
+                <div id="preview-frame" class="hidden qr-preview-frame">
+                    <img id="qr-output" alt="qr45 code" class="w-full h-auto block rounded-lg">
+                </div>
+
+                <div id="preview-error" class="hidden w-full p-3 bg-red-950/40 border border-red-800 rounded-xl text-xs text-red-200">
+                    <i class="fa-solid fa-triangle-exclamation mr-1.5"></i> <span id="error-msg"></span>
+                </div>
+
+                <!-- Download Options -->
+                <div id="download-actions" class="hidden items-center gap-2.5 w-full justify-center">
+                    <button onclick="downloadOutput('png')" class="flex-1 py-2 px-3 bg-[#1E232F] hover:bg-[#262B36] border border-[#262B36] rounded-lg text-xs font-bold text-white flex items-center justify-center gap-1.5 transition-colors">
+                        <i class="fa-solid fa-file-image text-[#FB542B]"></i> Download PNG
+                    </button>
+                    <button id="svg-dl-btn" onclick="downloadOutput('svg')" class="flex-1 py-2 px-3 bg-[#1E232F] hover:bg-[#262B36] border border-[#262B36] rounded-lg text-xs font-bold text-white flex items-center justify-center gap-1.5 transition-colors">
+                        <i class="fa-solid fa-vector-square text-[#FF7629]"></i> Download SVG
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- ── Legal Disclaimer & Copyright Footer ── -->
+        <footer class="border-t border-[#262B36] pt-5 pb-3 text-center text-[11px] text-[#8E97A8] flex flex-col items-center gap-3">
+            <!-- 45 Studios Official Emblem / Brandmark -->
+            <div class="flex items-center justify-center gap-2">
+                <img src="blk_blk_vert_bg45_logo.svg" alt="45 Studios Logo" class="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity rounded">
+            </div>
+
+            <p class="leading-relaxed max-w-md">
+                <span class="font-semibold text-white">Disclaimer:</span> qr45 is provided <strong>"AS IS"</strong>, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. In no event shall 45 Studios be liable for any claim, damages, or other liability.
+            </p>
+            <div class="flex items-center justify-center gap-4 text-[12px] pt-1">
+                <span>&copy; 2026 45 Studios. All rights reserved.</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ── Privacy & Terms Modals ── -->
+    <div id="legal-modal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+        <div class="bg-[#161922] border border-[#262B36] rounded-2xl max-w-lg w-full p-6 flex flex-col gap-4 text-[#CBD5E1]">
+            <div class="flex items-center justify-between border-b border-[#262B36] pb-3">
+                <h3 id="modal-title" class="text-base font-bold text-white">Legal Notice</h3>
+                <button onclick="closeModal()" class="text-[#8E97A8] hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="modal-content" class="text-xs leading-relaxed max-h-72 overflow-y-auto pr-1"></div>
+            <button onclick="closeModal()" class="generate-btn py-2 text-xs w-full">I Understand</button>
+        </div>
+    </div>
+
+    <script>
+        /* ── State variables ── */
+        let activeShape = 'square';
+        let activeMedia = 'none';
+        let latestBlob = null;
+        let latestSvgText = null;
+        let isAnimated = false;
+
+        /* ── Color Pickers ── */
+        document.querySelectorAll('input[type="color"]').forEach(el => {
+            const lbl = document.getElementById(el.id + '-label');
+            if (lbl) el.addEventListener('input', () => { lbl.textContent = el.value.toUpperCase(); });
+        });
+
+        /* ── Shape Selection ── */
+        function selectShape(shape) {
+            activeShape = shape;
+            document.querySelectorAll('[data-shape]').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-shape') === shape);
+            });
+        }
+
+        /* ── Media Mode Selection ── */
+        function selectMediaMode(mode) {
+            activeMedia = mode;
+            document.querySelectorAll('[data-media]').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-media') === mode);
+            });
+            document.getElementById('media-controls-logo').classList.toggle('hidden', mode !== 'logo');
+            document.getElementById('media-controls-logo').classList.toggle('flex', mode === 'logo');
+            document.getElementById('media-controls-gif').classList.toggle('hidden', mode !== 'gif');
+            document.getElementById('media-controls-gif').classList.toggle('flex', mode === 'gif');
+        }
+
+        function onFilePicked(input, labelId) {
+            if (input.files && input.files[0]) {
+                document.getElementById(labelId).textContent = input.files[0].name.slice(0, 14) + '…';
+            }
+        }
+
+        /* ── Core QR Generator Call ── */
+        async function renderQR() {
+            const data = document.getElementById('qr-data').value.trim();
+            if (!data) {
+                showError("Please enter a URL or text payload.");
+                return;
+            }
+
+            hideError();
+            document.getElementById('preview-placeholder').classList.add('hidden');
+            document.getElementById('preview-frame').classList.add('hidden');
+            document.getElementById('download-actions').classList.add('hidden');
+            document.getElementById('download-actions').classList.remove('flex');
+            document.getElementById('preview-spinner').classList.remove('hidden');
+            document.getElementById('preview-spinner').classList.add('flex');
+
+            const fd = new FormData();
+            fd.append('data', data);
+            fd.append('fill_color', document.getElementById('qr-fill').value);
+            fd.append('back_color', document.getElementById('qr-back').value);
+            fd.append('box_size', document.getElementById('qr-size').value);
+            fd.append('border', document.getElementById('qr-border').value);
+            fd.append('module_shape', activeShape);
+            fd.append('media_mode', activeMedia);
+
+            isAnimated = (activeMedia === 'gif');
+
+            if (activeMedia === 'logo') {
+                const f = document.getElementById('logo-file').files[0];
+                const u = document.getElementById('logo-url').value.trim();
+                if (f) fd.append('media_file', f);
+                else if (u) fd.append('media_url', u);
+            } else if (activeMedia === 'gif') {
+                const f = document.getElementById('gif-file').files[0];
+                const u = document.getElementById('gif-url').value.trim();
+                if (f) fd.append('media_file', f);
+                else if (u) fd.append('media_url', u);
+            }
+
+            try {
+                // Request PNG / Animated version
+                fd.append('format', isAnimated ? 'animated' : 'png');
+                const resp = await fetch('http://127.0.0.1:8000/api/qr/generate', { method: 'POST', body: fd });
+                if (!resp.ok) {
+                    const err = await resp.text();
+                    throw new Error(err);
+                }
+
+                latestBlob = await resp.blob();
+                const url = URL.createObjectURL(latestBlob);
+                document.getElementById('qr-output').src = url;
+
+                // Also fetch vector SVG if not in animated mode
+                if (!isAnimated) {
+                    const svgFd = new FormData();
+                    svgFd.append('data', data);
+                    svgFd.append('fill_color', document.getElementById('qr-fill').value);
+                    svgFd.append('back_color', document.getElementById('qr-back').value);
+                    svgFd.append('box_size', document.getElementById('qr-size').value);
+                    svgFd.append('border', document.getElementById('qr-border').value);
+                    svgFd.append('format', 'svg');
+                    svgFd.append('media_mode', 'none');
+
+                    const svgResp = await fetch('http://127.0.0.1:8000/api/qr/generate', { method: 'POST', body: svgFd });
+                    if (svgResp.ok) {
+                        latestSvgText = await svgResp.text();
+                        document.getElementById('svg-dl-btn').classList.remove('hidden');
+                    } else {
+                        document.getElementById('svg-dl-btn').classList.add('hidden');
+                    }
+                } else {
+                    document.getElementById('svg-dl-btn').classList.add('hidden');
+                }
+
+                document.getElementById('preview-spinner').classList.add('hidden');
+                document.getElementById('preview-spinner').classList.remove('flex');
+                document.getElementById('preview-frame').classList.remove('hidden');
+                document.getElementById('download-actions').classList.remove('hidden');
+                document.getElementById('download-actions').classList.add('flex');
+
+            } catch (ex) {
+                document.getElementById('preview-spinner').classList.add('hidden');
+                document.getElementById('preview-spinner').classList.remove('flex');
+                document.getElementById('preview-placeholder').classList.remove('hidden');
+                showError(ex.message || "Failed to generate QR code.");
+            }
+        }
+
+        /* ── Download Handler ── */
+        function downloadOutput(fmt) {
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const a = document.createElement('a');
+
+            if (fmt === 'svg' && latestSvgText) {
+                const blob = new Blob([latestSvgText], { type: 'image/svg+xml' });
+                a.href = URL.createObjectURL(blob);
+                a.download = `qr45-${timestamp}.svg`;
+            } else if (latestBlob) {
+                const ext = isAnimated ? 'gif' : 'png';
+                a.href = URL.createObjectURL(latestBlob);
+                a.download = `qr45-${timestamp}.${ext}`;
+            }
+            a.click();
+        }
+
+        function showError(msg) {
+            document.getElementById('error-msg').textContent = msg;
+            document.getElementById('preview-error').classList.remove('hidden');
+        }
+        function hideError() {
+            document.getElementById('preview-error').classList.add('hidden');
+        }
+
+        /* ── Legal Modals Content ── */
+        const legalTexts = {
+            privacy: `
+                <h4 class="font-bold text-white mb-1.5">qr45 Privacy Policy</h4>
+                <p class="mb-2"><strong>Zero Data Retention:</strong> qr45 processes your payloads and URLs strictly on-demand. No logs, personal identifiers, or IP addresses are stored on disk or transferred to third parties.</p>
+                <p class="mb-2"><strong>Local Computation:</strong> When generating codes, the server generates the raster or vector output directly in memory and immediately transmits the binary stream back to your client.</p>
+                <p><strong>External Media:</strong> When providing external image URLs for logo or background overlays, qr45 fetches the media file ephemerally solely to assemble the visual composition.</p>
+            `,
+            toc: `
+                <h4 class="font-bold text-white mb-1.5">Terms of Conditions (ToC)</h4>
+                <p class="mb-2"><strong>Permitted Use:</strong> You are granted a worldwide, royalty-free license to generate, reproduce, and distribute QR codes generated using qr45 for both personal and commercial endeavors.</p>
+                <p class="mb-2"><strong>Prohibited Activities:</strong> You agree not to encode malicious payloads, phishing URLs, exploit delivery mechanisms, or deceptive links.</p>
+                <p class="mb-2"><strong>"AS IS" Provision:</strong> qr45 is supplied strictly AS IS, with no guarantees regarding scanning reliability, error-correction performance under physical degradation, or compatibility with particular barcode readers.</p>
+            `
+        };
+
+        function openModal(type) {
+            document.getElementById('modal-title').textContent = type === 'privacy' ? 'Privacy Statement' : 'Terms & Conditions';
+            document.getElementById('modal-content').innerHTML = legalTexts[type];
+            document.getElementById('legal-modal').classList.remove('hidden');
+        }
+        function closeModal() {
+            document.getElementById('legal-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
